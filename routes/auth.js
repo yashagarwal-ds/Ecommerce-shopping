@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const UserModel = require("../models/user");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 router.post("/register", async(req, res) => {
     const {username, email, password} = req.body;
@@ -34,7 +35,7 @@ router.post("/register", async(req, res) => {
 });
 
 router.post("/login", async(req, res) => {
-    const {username, email, password} = req.body;
+    const {email, password} = req.body;
 
     try{
         const user = await UserModel.findOne({email : email});
@@ -50,7 +51,12 @@ router.post("/login", async(req, res) => {
 
             // const {password, ...others} = user._doc
 
-            return res.status(200).json(user);
+            const accessToken = jwt.sign({
+                id : user._id,
+                isAdmin : user.isAdmin
+            }, "yash", {expiresIn : 36000});
+
+            return res.status(200).json({user, accessToken});
         }
     }catch(error){
         res.status(500).json({msg : error});

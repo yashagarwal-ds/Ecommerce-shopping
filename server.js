@@ -13,5 +13,8 @@ app.get("/", (req, res) => {
 
 app.use("/user", require("./routes/user"));
 app.use("/auth", require("./routes/auth"));
+app.use("/product", require("./routes/product"));
+app.use("/cart", require("./routes/cart"));
+app.use("/order", require("./routes/order"));
 
 app.listen(PORT, () => console.log("This is listening port", PORT));
