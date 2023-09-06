@@ -28,7 +28,7 @@ router.post("/register", async(req, res) => {
 
         await user.save();
 
-        return res.status(200).json({user : user});
+        return res.status(200).json({user : user, isSuccess : true});
     }catch(error){
         res.status(500).json({msg : error})
     }
@@ -56,7 +56,7 @@ router.post("/login", async(req, res) => {
                 isAdmin : user.isAdmin
             }, "yash", {expiresIn : 36000});
 
-            return res.status(200).json({user, accessToken});
+            return res.status(200).json({user, accessToken, isSuccess : true});
         }
     }catch(error){
         res.status(500).json({msg : error});
